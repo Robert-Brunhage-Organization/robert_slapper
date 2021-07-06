@@ -17,6 +17,7 @@ class SessionManager extends BaseComponent {
       ..x = size.x / 2.5 // size is a property from game
       ..y = 32.0
       ..isHud = true;
+    isHud = true;
   }
 
   final RobertSlapper game;

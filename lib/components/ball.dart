@@ -13,7 +13,7 @@ class Ball extends SpriteComponent with Hitbox, Collidable {
   Ball({
     required this.game,
   }) {
-    debugMode = true;
+    //debugMode = true;
     addShape(HitboxCircle(definition: 0.8));
   }
 
