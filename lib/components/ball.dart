@@ -1,18 +1,20 @@
 import 'dart:ui';
+import 'dart:math' as math;
 
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
-import 'package:robert_slapper/components/ball_line.dart';
+import 'package:flame/particles.dart';
+import 'package:flame_audio/flame_audio.dart';
+import 'package:flutter/material.dart';
+import 'package:robert_slapper/components/lines/ball_line.dart';
 import 'package:robert_slapper/main.dart';
 
-class Ball extends ShapeComponent with Hitbox, Collidable {
+class Ball extends SpriteComponent with Hitbox, Collidable {
   Ball({
-    required Shape shape,
-    required Paint shapePaint,
     required this.game,
-  }) : super(shape, shapePaint) {
+  }) {
     debugMode = true;
-    addShape(HitboxCircle());
+    addShape(HitboxCircle(definition: 0.8));
   }
 
   final RobertSlapper game;
@@ -20,6 +22,13 @@ class Ball extends ShapeComponent with Hitbox, Collidable {
   bool isColliding = false;
   bool isOffScreen = false;
   List<Collidable> currentlyColliding = [];
+
+  @override
+  Future<void>? onLoad() async {
+    sprite = await Sprite.load('Logo.png');
+    size = Vector2.all(128.0);
+    return super.onLoad();
+  }
 
   @override
   void update(double dt) {
@@ -42,14 +51,49 @@ class Ball extends ShapeComponent with Hitbox, Collidable {
       if (other is BallLine) {
         isColliding = true;
         game.camera.shake();
-        game.scoreManager.updateScore();
+        game.sessionManager.updateScore();
+        collisionParticle(Colors.blue);
+        FlameAudio.play('impact.mp3', volume: 0.4);
         other.remove();
       }
       if (other is ScreenCollidable) {
         isOffScreen = true;
-        game.scoreManager.reduceHealth();
+        collisionParticle(Colors.red);
+        game.sessionManager.reduceHealth();
       }
     }
+  }
+
+  void collisionParticle(Color color) {
+    math.Random rnd = math.Random();
+    Vector2 randomVector2() => (Vector2.random(rnd) - Vector2.random(rnd)) * 800;
+    game.add(
+      ParticleComponent(
+        particle: Particle.generate(
+          count: 40,
+          lifespan: 1,
+          generator: (i) {
+            return AcceleratedParticle(
+              acceleration: randomVector2(),
+              speed: randomVector2(),
+              position: (this.position.clone() + Vector2(0, this.size.y / 1.5)),
+              child: ComputedParticle(
+                renderer: (canvas, particle) => canvas.drawCircle(
+                  Offset.zero,
+                  particle.progress * 10,
+                  Paint()
+                    ..color = Color.lerp(
+                      color,
+                      color.withAlpha(0),
+                      particle.progress,
+                    )!,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   void onCollisionEnd(Collidable other) {
