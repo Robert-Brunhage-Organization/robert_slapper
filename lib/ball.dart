@@ -6,8 +6,9 @@ import 'package:flame/geometry.dart';
 import 'package:flame/particles.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
-import 'package:robert_slapper/components/lines/ball_line.dart';
-import 'package:robert_slapper/main.dart';
+
+import 'lines/ball_line.dart';
+import 'robert_slapper.dart';
 
 class Ball extends SpriteComponent with Hitbox, Collidable {
   Ball({
@@ -27,6 +28,7 @@ class Ball extends SpriteComponent with Hitbox, Collidable {
   Future<void>? onLoad() async {
     sprite = await Sprite.load('Logo.png');
     size = Vector2.all(128.0);
+    this.anchor = Anchor.center;
     return super.onLoad();
   }
 

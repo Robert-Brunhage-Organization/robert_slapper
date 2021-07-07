@@ -4,21 +4,23 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flutter/material.dart';
-import 'package:robert_slapper/components/lines/spawn_line.dart';
-import 'package:robert_slapper/main.dart';
 
+import '../robert_slapper.dart';
 import 'ball_line.dart';
 import 'despawner.dart';
+import 'spawn_line.dart';
 
-class BallLineSpawner {
-  BallLineSpawner({
+class BallLineManager {
+  BallLineManager({
     required this.game,
   });
 
   final RobertSlapper game;
   late SpawnLine _spawnLine;
 
-  Despawner createDespawner() {
+  final List<BallLine> lines = List.empty(growable: true);
+
+  void addDespawner() {
     final despawner = Despawner(
       shape: Rectangle(size: Vector2(20, 200)),
       shapePaint: Paint()..color = Colors.transparent,
@@ -26,18 +28,20 @@ class BallLineSpawner {
       x: 0,
       game: game,
     );
-    return despawner;
+    game.add(despawner);
   }
 
-  SpawnLine createBallLineSpawner(VoidCallback onSpawn) {
+  void addBallLineSpawner() {
     _spawnLine = SpawnLine(
         shape: Rectangle(size: Vector2(20, 200)),
         shapePaint: Paint()..color = Colors.transparent,
         game: game,
         onSpawn: () {
-          onSpawn();
+          final subsequentPlatform = createBallLine();
+          lines.add(subsequentPlatform);
+          game.add(subsequentPlatform);
         });
-    return _spawnLine;
+    game.add(_spawnLine);
   }
 
   BallLine createBallLine() {
@@ -51,5 +55,10 @@ class BallLineSpawner {
       y: game.canvasSize.y - 50,
     );
     return platform;
+  }
+
+  void reset() {
+    game.removeAll(lines);
+    lines.clear();
   }
 }

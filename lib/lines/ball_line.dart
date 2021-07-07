@@ -3,9 +3,8 @@ import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flutter/painting.dart';
-import 'package:robert_slapper/main.dart';
 
-import 'despawner.dart';
+import '../../robert_slapper.dart';
 
 class BallLine extends ShapeComponent with Hitbox, Collidable {
   BallLine({
@@ -27,15 +26,6 @@ class BallLine extends ShapeComponent with Hitbox, Collidable {
   void update(double dt) {
     position.x -= speed;
     super.update(dt);
-  }
-
-  @override
-  void onCollisionEnd(Collidable other) {
-    if (other is Despawner) {
-      game.sessionManager.reduceHealth();
-      remove();
-    }
-    super.onCollisionEnd(other);
   }
 }
 

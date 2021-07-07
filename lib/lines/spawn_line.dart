@@ -1,8 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flutter/painting.dart';
-import 'package:robert_slapper/main.dart';
 
+import '../../robert_slapper.dart';
 import 'ball_line.dart';
 
 class SpawnLine extends ShapeComponent with Hitbox, Collidable {
@@ -12,7 +12,6 @@ class SpawnLine extends ShapeComponent with Hitbox, Collidable {
     required this.game,
     required this.onSpawn,
   }) : super(shape, shapePaint) {
-    position = Vector2(0, game.canvasSize.y - height / 2);
     // debugMode = true;
     addShape(HitboxRectangle());
   }

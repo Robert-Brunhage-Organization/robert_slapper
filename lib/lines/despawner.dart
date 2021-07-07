@@ -1,7 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flutter/painting.dart';
-import 'package:robert_slapper/main.dart';
+
+import '../../robert_slapper.dart';
+import 'ball_line.dart';
 
 class Despawner extends ShapeComponent with Hitbox, Collidable {
   Despawner({
@@ -11,7 +13,6 @@ class Despawner extends ShapeComponent with Hitbox, Collidable {
     required double y,
     required this.game,
   }) : super(shape, shapePaint) {
-    position = Vector2(game.canvasSize.x - 100, game.canvasSize.y - 100);
     // debugMode = true;
     addShape(HitboxRectangle());
   }
@@ -22,5 +23,14 @@ class Despawner extends ShapeComponent with Hitbox, Collidable {
   void onGameResize(Vector2 gameSize) {
     position = Vector2(0, game.canvasSize.y - height / 2);
     super.onGameResize(gameSize);
+  }
+
+  @override
+  void onCollisionEnd(Collidable other) {
+    if (other is BallLine) {
+      game.sessionManager.reduceHealth();
+      other.remove();
+    }
+    super.onCollisionEnd(other);
   }
 }
