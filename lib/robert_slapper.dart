@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
+import 'package:flame/parallax.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:robert_slapper/lines/ball_line_manager.dart';
@@ -17,7 +18,7 @@ class RobertSlapper extends BaseGame with TapDetector, HasCollidables {
   late final BallLineManager ballLineSpawner;
 
   @override
-  Future<void> onLoad() {
+  Future<void> onLoad() async {
     FlameAudio.bgm.initialize();
     camera.shakeIntensity = 20;
     ball = Ball(
@@ -25,6 +26,15 @@ class RobertSlapper extends BaseGame with TapDetector, HasCollidables {
     );
     sessionManager = SessionManager(game: this, size: size);
     ballLineSpawner = BallLineManager(game: this);
+
+    final backgroundComponent = await loadParallaxComponent(
+      [
+        ParallaxImageData('Background.jpg'),
+      ],
+      baseVelocity: Vector2(50, 0),
+    );
+
+    add(backgroundComponent);
 
     add(sessionManager);
     add(ScreenCollidable());
