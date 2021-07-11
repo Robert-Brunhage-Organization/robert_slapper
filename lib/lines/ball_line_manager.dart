@@ -58,7 +58,7 @@ class BallLineManager {
   }
 
   void reset() {
-    game.removeAll(lines);
+    game.components.removeAll(lines);
     lines.clear();
   }
 }

@@ -20,7 +20,7 @@ class RobertSlapper extends BaseGame with TapDetector, HasCollidables {
   @override
   Future<void> onLoad() async {
     FlameAudio.bgm.initialize();
-    camera.shakeIntensity = 20;
+    camera.defaultShakeIntensity = 20;
     ball = Ball(
       game: this,
     );
@@ -33,7 +33,6 @@ class RobertSlapper extends BaseGame with TapDetector, HasCollidables {
       ],
       baseVelocity: Vector2(50, 0),
     );
-
     add(backgroundComponent);
 
     add(sessionManager);

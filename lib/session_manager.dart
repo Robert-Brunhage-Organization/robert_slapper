@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame/particles.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
@@ -65,6 +66,30 @@ class SessionManager extends BaseComponent {
 
   void reduceHealth() {
     _healthLeft--;
+    final particle = createRedScreenParticle();
+    game.add(particle);
     FlameAudio.play('ouch.mp3', volume: 0.2);
+  }
+
+  ParticleComponent createRedScreenParticle() {
+    final particle = ParticleComponent(
+      particle: ComputedParticle(
+        lifespan: 0.3,
+        renderer: (canvas, particle) {
+          final rectangle =
+              Rect.fromCenter(center: Offset(game.size.x / 2, game.size.y / 2), width: game.size.x * 2, height: game.size.y * 2);
+          canvas.drawRect(
+            rectangle,
+            Paint()
+              ..color = Colors.red
+              ..style = PaintingStyle.fill
+              ..shader = RadialGradient(colors: [Colors.transparent, Colors.red]).createShader(rectangle)
+              ..strokeWidth = 2,
+          );
+        },
+      ),
+    );
+
+    return particle;
   }
 }
