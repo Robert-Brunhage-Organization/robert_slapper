@@ -96,9 +96,11 @@ class SessionManager extends BaseComponent {
 
   void reduceHealth() {
     _healthLeft--;
-    final particle = createRedScreenParticle();
-    game.add(particle);
-    FlameAudio.play('ouch.mp3', volume: 0.2);
+    if (_healthLeft > 0) {
+      final particle = createRedScreenParticle();
+      game.add(particle);
+      FlameAudio.play('ouch.mp3', volume: 0.2);
+    }
   }
 
   ParticleComponent createRedScreenParticle() {
