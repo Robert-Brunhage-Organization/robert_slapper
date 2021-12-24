@@ -46,6 +46,9 @@ class SessionManager extends BaseComponent {
   int _healthLeft = 3;
   late TextComponent healthLeftComponent;
 
+  bool _playing = false;
+  bool get playing => _playing;
+
   @override
   Future<void>? onLoad() {
     _prefs.then((prefs) {
@@ -79,6 +82,7 @@ class SessionManager extends BaseComponent {
           prefs.setInt('highScore', _score);
         });
       }
+      _playing = false;
       game.overlays.add(pauseMenu);
       game.pauseEngine();
     }
@@ -88,6 +92,7 @@ class SessionManager extends BaseComponent {
   void reset() {
     _score = 0;
     _healthLeft = 3;
+    _playing = true;
   }
 
   void updateScore() {

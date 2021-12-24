@@ -19,7 +19,7 @@ Future<void> main() async {
         pauseMenu,
       ],
       overlayBuilderMap: {
-        'PauseMenu': (context, game) {
+        pauseMenu: (context, game) {
           return PauseMenuOverlay(robertSlapper: game);
         },
       },
@@ -69,7 +69,8 @@ class PauseMenuOverlay extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 64),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 24, horizontal: 64),
                 primary: RobertColors.primary,
               ),
               onPressed: () {
