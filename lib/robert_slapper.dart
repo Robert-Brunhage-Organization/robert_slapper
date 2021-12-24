@@ -63,6 +63,7 @@ class RobertSlapper extends BaseGame with TapDetector, HasCollidables {
 
   @override
   void onTap() {
+    if (!sessionManager.playing) return;
     ball.isOffScreen = false;
     ball.isColliding = false;
     hasTapped = true;
@@ -79,7 +80,8 @@ class RobertSlapper extends BaseGame with TapDetector, HasCollidables {
   void render(Canvas canvas) {
     // Player Controls
     if (hasTapped) {
-      ball.position.moveToTarget(Vector2(canvasSize.x / 2, canvasSize.y + 60), 20);
+      ball.position
+          .moveToTarget(Vector2(canvasSize.x / 2, canvasSize.y + 60), 20);
       if (ball.isColliding || ball.isOffScreen) {
         hasTapped = false;
       }
