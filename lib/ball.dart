@@ -60,6 +60,7 @@ class Ball extends SpriteComponent with Hitbox, Collidable {
       }
       if (other is ScreenCollidable) {
         isOffScreen = true;
+        game.hasTapped = false;
         collisionParticle(Colors.red);
         game.sessionManager.reduceHealth();
       }
@@ -68,7 +69,8 @@ class Ball extends SpriteComponent with Hitbox, Collidable {
 
   void collisionParticle(Color color) {
     math.Random rnd = math.Random();
-    Vector2 randomVector2() => (Vector2.random(rnd) - Vector2.random(rnd)) * 800;
+    Vector2 randomVector2() =>
+        (Vector2.random(rnd) - Vector2.random(rnd)) * 800;
     game.add(
       ParticleComponent(
         particle: Particle.generate(
