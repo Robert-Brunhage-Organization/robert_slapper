@@ -61,8 +61,10 @@ class Ball extends SpriteComponent with Hitbox, Collidable {
       if (other is ScreenCollidable) {
         isOffScreen = true;
         game.hasTapped = false;
-        collisionParticle(Colors.red);
         game.sessionManager.reduceHealth();
+        if (game.sessionManager.healthLeft > 0) {
+          collisionParticle(Colors.red);
+        }
       }
     }
   }

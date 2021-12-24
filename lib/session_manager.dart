@@ -44,6 +44,7 @@ class SessionManager extends BaseComponent {
   late TextComponent highScoreComponent;
 
   int _healthLeft = 3;
+  int get healthLeft => _healthLeft;
   late TextComponent healthLeftComponent;
 
   bool _playing = false;
